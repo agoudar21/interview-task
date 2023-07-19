@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import "./ProductTable.css"
+import React, { useEffect, useState } from "react";
+import "./ProductTable.css";
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
-  const [filterText, setFilterText] = useState('');
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch data from APIs endpoints
-        const branch1Response = await fetch('./apis/branch1.json');
-        const branch2Response = await fetch('./apis/branch2.json');
-        const branch3Response = await fetch('./apis/branch3.json');
+        const branch1Response = await fetch("./apis/branch1.json");
+        const branch2Response = await fetch("./apis/branch2.json");
+        const branch3Response = await fetch("./apis/branch3.json");
 
         // Extract JSON data from responses
         const branch1Data = await branch1Response.json();
@@ -33,7 +33,7 @@ const ProductTable = () => {
         setProducts(mergedProducts);
         setFilteredProducts(mergedProducts);
       } catch (error) {
-        console.error('Unable to fecth the data', error);
+        console.error("Unable to fecth the data", error);
       }
     };
 
@@ -54,7 +54,7 @@ const ProductTable = () => {
         } else {
           mergedProductsMap[id] = {
             id,
-            name, 
+            name,
             unitPrice,
             sold,
             revenue: unitPrice * sold,
@@ -79,9 +79,15 @@ const ProductTable = () => {
     const { value } = event.target;
     setFilterText(value);
 
+    if (value.trim() === "") {
+      setFilteredProducts(products);
+      return;
+    }
+
     // Filter products based on filterText
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(value.toLowerCase())
+    const filtered = products.filter(
+      (product) => product.name.toLowerCase() === value.toLowerCase()
+      // product.name.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredProducts(filtered);
   };
